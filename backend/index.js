@@ -9,7 +9,7 @@ connectToMongoose()
 const app = express()
 const port = 5000
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Backend iNoteBook App listening on port ${port}`)
 })
 app.get('/', (req, res) => {
   res.send('Hello Harry!')
@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 //No 4: Do that Because Endpoint are going to pass jsos=n
 app.use(express.json())
-
+ 
 //No 5. Define authentication and notes route/api
 app.use('/api/auth/', require('./routes/auth'))
 
