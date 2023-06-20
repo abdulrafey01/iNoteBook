@@ -1,3 +1,5 @@
+
+https://github.com/abdulrafey01/iNoteBook/assets/115981065/2fc5b463-aecd-4ada-b96c-f08b4367670e
 **iNoteBook**
 
 iNoteBook is a simple note-taking application built with the MERN (MongoDB, Express.js, React.js, Node.js) stack. It allows users to create an account, log in, and manage their notes efficiently.
