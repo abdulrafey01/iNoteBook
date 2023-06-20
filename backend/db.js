@@ -7,7 +7,7 @@ const connectToMongoose = ()=>{
 mongoose.connect(mongoUri).then(()=>{
     console.log("Conneceted To Database")
 }).catch((e)=>{
-    console.log('Error agya')
+    console.log(e.message)
 })
 }
 

@@ -16,16 +16,17 @@ router.post('/createuser', [
    body('password').isLength({ min: 6 }),
 ], async (req, res) => {
 
+   let success = false
    // If there are errors in posting data show errors
    const error = validationResult(req);
    if (!error.isEmpty()) {
-      return res.send({ errors: error.array() });
+      return res.send({success:false, errors: error.array() });
    }
 
    // Check if user with same email already exists
    let user = await User.findOne({ email: req.body.email })
    if (user) {
-      return res.status(400).json("User already exists")
+      return res.status(400).json({success:false, msg:"User already exists"})
    }
 
    // Creating User With The Help Of User Model
@@ -46,7 +47,7 @@ router.post('/createuser', [
          userId: user.id
       }
       const authToken = jwt.sign(data, JWT_SECRET)
-      res.json({ authToken: authToken })
+      res.json({success:true, authToken: authToken })
 
 
    } catch (error) {
@@ -58,18 +59,19 @@ router.post('/createuser', [
 
 //ROUTE 2: Login Endpoint : POST : 
 
-router.post('/login/', [
+router.post('/login', [
 
    // Check if email and password is in cirrect format
    body('email', 'Please Enter Email Correctly').isEmail(),
    body('password', 'Please Enter Password').exists(),
 
 ], async (req, res) => {
-
+   let success = false
    // If there are errors as loging in with wrong format
    const error = validationResult(req);
    if (!error.isEmpty()) {
-      return res.send({ errors: error.array() });
+      return res.send({ success : false, errors: error.array() });
+      
    }
 
    const { email, password } = req.body
@@ -80,14 +82,18 @@ router.post('/login/', [
       // First Check Email. It will return us the user with matched Email
       const user = await User.findOne({ email: enteredEmail })
       if (!user) {
-         return res.status(400).json('Jani Email Sai Dal')
+         return res.status(400).json({success: false, msg:'Jani Email Sai Dal'})
+          
       }
 
       // Second Check password
       const passwordCompare = await bcrypt.compare(enteredPassword, user.password)
       if (!passwordCompare) {
-         return res.json('Jani password Sai Dal')
+         return res.json({success: false, msg:'Jani password Sai Dal'})
+      
+
       }
+    success = true
 
       // to pass userdetails to other pages
       // Jwt Token
@@ -95,7 +101,7 @@ router.post('/login/', [
          userId: user.id
       }
       const authToken = jwt.sign(data, JWT_SECRET)
-      res.json({ authToken: authToken })
+      res.json({success, authToken: authToken })
    } catch (error) {
       console.log(error)
    }
